@@ -1,26 +1,28 @@
 import "@aws-amplify/ui-react/styles.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { Authenticator } from "@aws-amplify/ui-react";
 import { generateClient } from "aws-amplify/data";
+import MessageForm from "./MessageForm";
+import { MessageFormData, Segment } from "./types";
+import Messages from "./Messages";
+import UserSegments from "./UserSegments";
+import { useMessages, useUserSegments } from "./hooks";
 
 const client = generateClient<Schema>();
 
 function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
+  const { messages, deleteMessage } = useMessages();
+  const { userSegments, setUserSegments } = useUserSegments();
+  const [showForm, setShowForm] = useState<boolean>(false);
 
-  useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
-
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-  }
-
-  const deleteTodo = (id: string) => {
-    client.models.Todo.delete({ id });
+  const createMessage = (formData: MessageFormData) => {
+    const userSegementID = userSegments.length > 0 ? userSegments[0].id : null;
+    client.models.Message.create({ ...formData, userSegementID });
+    setShowForm(false);
+  };
+  const onCreateSegment = (segment: Segment) => {
+    client.models.UserSegment.create({ ...segment });
   };
 
   return (
@@ -28,21 +30,15 @@ function App() {
       {({ signOut, user }) => (
         <main>
           <h1>{user?.signInDetails?.loginId}'s todos</h1>
-          <button onClick={createTodo}>+ new</button>
-          <ul>
-            {todos.map((todo) => (
-              <li key={todo.id} onClick={() => deleteTodo(todo.id)}>
-                {todo.content}
-              </li>
-            ))}
-          </ul>
-          <div>
-            🥳 App successfully hosted. Try creating a new todo.
-            <br />
-            <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-              Review next step of this tutorial.
-            </a>
-          </div>
+          <button onClick={() => setShowForm(true)}>+ New Message</button>
+          {showForm && <MessageForm onSubmit={createMessage} />}
+          <Messages
+            messages={messages}
+            deleteMessage={deleteMessage}
+            userSegments={userSegments}
+            onCreateSegment={onCreateSegment}
+          />
+          <UserSegments userSegments={userSegments} />
           <button onClick={signOut}>Sign out</button>
         </main>
       )}
