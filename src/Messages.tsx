@@ -20,12 +20,10 @@ const Messages: React.FC<MessagesProps> = ({
     {console.log(messages, userSegments)}
     <ul>
       {messages.map((message) => (
-        <li
-          key={message.id}
-          // onClick={() => deleteMessage(message.id)}
-        >
+        <li key={message.id}>
+          <button onClick={() => deleteMessage(message.id)}>X</button>
           <h2>{message.title}</h2>
-          <p>{message.content}</p>
+          <p>Description: {message.content}</p>
           <p>Author: {message.owner}</p>
           <UserSegments
             userSegments={userSegments.filter(
