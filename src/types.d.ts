@@ -5,7 +5,8 @@ export interface MessageFormData {
 }
 
 export interface Segment {
+  id?: string;
   name: string;
   description: string;
-  messageID: string;
+  messageID?: string;
 }

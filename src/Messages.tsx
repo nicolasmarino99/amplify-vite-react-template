@@ -6,8 +6,8 @@ import { Segment } from "./types";
 interface MessagesProps {
   messages: Array<Schema["Message"]["type"]>;
   deleteMessage: (id: string) => void;
-  userSegments: Array<any>;
-  onCreateSegment: (segment: Segment) => void;
+  userSegments: Array<Segment>;
+  onCreateSegment: (messageID: string) => (segment: Segment) => void;
 }
 
 const Messages: React.FC<MessagesProps> = ({
@@ -30,7 +30,7 @@ const Messages: React.FC<MessagesProps> = ({
               (segment) => segment.messageID === message.id
             )}
           />
-          <SegmentForm messageID={message.id} onSubmit={onCreateSegment} />
+          <SegmentForm onSubmit={onCreateSegment(message.id)} />
         </li>
       ))}
     </ul>

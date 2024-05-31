@@ -3,14 +3,12 @@ import { Segment } from "./types";
 
 interface SegmentFormProps {
   onSubmit: (segment: Segment) => void;
-  messageID: string;
 }
 
-const SegmentForm: React.FC<SegmentFormProps> = ({ onSubmit, messageID }) => {
+const SegmentForm: React.FC<SegmentFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<Segment>({
     name: "",
     description: "",
-    messageID,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +22,7 @@ const SegmentForm: React.FC<SegmentFormProps> = ({ onSubmit, messageID }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(formData);
-    setFormData({ name: "", description: "", messageID: "" });
+    setFormData({ name: "", description: "" });
   };
 
   return (

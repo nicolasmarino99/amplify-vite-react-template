@@ -19,7 +19,8 @@ function App() {
     client.models.Message.create({ ...formData });
     setShowForm(false);
   };
-  const onCreateSegment = (segment: Segment) => {
+  const onCreateSegment = (messageID: string) => (segment: Segment) => {
+    segment.messageID = messageID;
     client.models.UserSegment.create({
       ...segment,
     });
