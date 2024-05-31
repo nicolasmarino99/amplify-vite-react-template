@@ -25,7 +25,7 @@ export const useMessages = () => {
 };
 
 export const useUserSegments = () => {
-  const [userSegments, setUserSegments] = useState<Array<Schema["UserSegment"]["type"]>>([]);
+  const [userSegments, setUserSegments] = useState<Array<any>>([]);
 
   useEffect(() => {
     const subscription = client.models.UserSegment.observeQuery().subscribe({

@@ -9,7 +9,6 @@ const MessageForm: React.FC<MessageFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<MessageFormData>({
     title: "",
     content: "",
-    author: "",
   });
 
   const handleChange = (
@@ -22,7 +21,7 @@ const MessageForm: React.FC<MessageFormProps> = ({ onSubmit }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(formData);
-    setFormData({ title: "", content: "", author: "" });
+    setFormData({ title: "", content: "" });
   };
 
   return (
@@ -42,14 +41,6 @@ const MessageForm: React.FC<MessageFormProps> = ({ onSubmit }) => {
         value={formData.content}
         onChange={handleChange}
       ></textarea>
-      <label htmlFor="author">Author:</label>
-      <input
-        type="text"
-        id="author"
-        name="author"
-        value={formData.author}
-        onChange={handleChange}
-      />
       <button type="submit">Submit</button>
     </form>
   );

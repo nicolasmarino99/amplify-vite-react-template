@@ -1,10 +1,11 @@
 export interface MessageFormData {
   title: string;
   content: string;
-  author: string;
+  segmets?: Segment[]
 }
 
 export interface Segment {
   name: string;
   description: string;
+  messageID: string;
 }

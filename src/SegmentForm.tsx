@@ -9,6 +9,7 @@ const SegmentForm: React.FC<SegmentFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<Segment>({
     name: "",
     description: "",
+    messageID: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +23,7 @@ const SegmentForm: React.FC<SegmentFormProps> = ({ onSubmit }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(formData);
-    setFormData({ name: "", description: "" });
+    setFormData({ name: "", description: "", messageID: "" });
   };
 
   return (

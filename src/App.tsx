@@ -6,7 +6,6 @@ import { generateClient } from "aws-amplify/data";
 import MessageForm from "./MessageForm";
 import { MessageFormData, Segment } from "./types";
 import Messages from "./Messages";
-import UserSegments from "./UserSegments";
 import { useMessages, useUserSegments } from "./hooks";
 
 const client = generateClient<Schema>();
@@ -17,20 +16,25 @@ function App() {
   const [showForm, setShowForm] = useState<boolean>(false);
 
   const createMessage = (formData: MessageFormData) => {
-    const userSegementID = userSegments.length > 0 ? userSegments[0].id : null;
-    client.models.Message.create({ ...formData, userSegementID });
+    client.models.Message.create({ ...formData });
     setShowForm(false);
   };
-  const onCreateSegment = (segment: Segment) => {
-    client.models.UserSegment.create({ ...segment });
+  const onCreateSegment = (messageID: string) => (segment: Segment) => {
+    segment.messageID = messageID;
+    client.models.UserSegment.create({
+      ...segment,
+    });
+    setUserSegments((prevSegments) => [...prevSegments, segment]);
+    console.log(userSegments);
   };
-
   return (
     <Authenticator>
       {({ signOut, user }) => (
         <main>
-          <h1>{user?.signInDetails?.loginId}'s todos</h1>
-          <button onClick={() => setShowForm(true)}>+ New Message</button>
+          <h1>Welcome {user?.signInDetails?.loginId?.split("@")[0]}!</h1>
+          <button onClick={() => setShowForm((prev) => !prev)}>
+            + New Message
+          </button>
           {showForm && <MessageForm onSubmit={createMessage} />}
           <Messages
             messages={messages}
@@ -38,7 +42,6 @@ function App() {
             userSegments={userSegments}
             onCreateSegment={onCreateSegment}
           />
-          <UserSegments userSegments={userSegments} />
           <button onClick={signOut}>Sign out</button>
         </main>
       )}

@@ -12,11 +12,12 @@ const schema = a.schema({
       title: a.string(),
       content: a.string(),
       author: a.string(),
-      userSegementID: a.string()
+      segments: a.hasMany('UserSegment', 'UserSegmentID'),
     })
     .authorization(allow => [allow.owner()]),
     UserSegment: a
-      .model({
+    .model({
+        message: a.belongsTo('Message', 'messageID'),
         name: a.string(),
         description: a.string(),
       })
