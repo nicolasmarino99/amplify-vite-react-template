@@ -17,6 +17,7 @@ const schema = a.schema({
     .authorization(allow => [allow.owner()]),
     UserSegment: a
     .model({
+        UserSegmentID: a.id(),
         message: a.belongsTo('Message', 'messageID'),
         name: a.string(),
         description: a.string(),
